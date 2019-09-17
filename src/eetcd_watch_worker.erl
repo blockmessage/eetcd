@@ -26,7 +26,8 @@ start_link(Request, Callback, Options) ->
 %%%===================================================================
 init([Request, Callback, Options]) ->
     erlang:process_flag(trap_exit, true),
-    StreamRef = eetcd_watch:watch(Request),
+    Headers = proplists:get_value(headers, Options, []),
+    StreamRef = eetcd_watch:watch(Request, Headers),
     {ok, #state{
         ref = StreamRef,
         callback = Callback,
